@@ -1,20 +1,25 @@
+cmake_minimum_required(VERSION 3.18)
 project(media-controls VERSION 0.3.4)
 set(PROJECT_FULL_NAME "Media Controls")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 
+find_package(Qt5Widgets)
+
+set(CMAKE_AUTOMOC ON)
+
 set(media-controls_HEADERS
     media-controls.hpp
     media-control.hpp
     media-slider.hpp
-	../../slider-absoluteset-style.hpp
+	${CMAKE_SOURCE_DIR}/UI/slider-absoluteset-style.hpp
 	version.h)
 
 set(media-controls_SOURCES
     media-slider.cpp
     media-controls.cpp
     media-control.cpp
-	../../slider-absoluteset-style.cpp)
+	${CMAKE_SOURCE_DIR}/UI/slider-absoluteset-style.cpp)
 
 if(WIN32)
 	get_filename_component(ISS_FILES_DIR "${CMAKE_BINARY_DIR}\\..\\package" ABSOLUTE)
@@ -44,5 +49,7 @@ target_link_libraries(media-controls
 	Qt5::Widgets
 	libobs)
 
+target_include_directories(media-controls PRIVATE
+        "${CMAKE_SOURCE_DIR}/UI/obs-frontend-api")
 set_target_properties(media-controls PROPERTIES FOLDER "plugins/exeldro")
 install_obs_plugin_with_data(media-controls data)
