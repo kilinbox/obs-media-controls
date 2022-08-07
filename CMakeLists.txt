@@ -1,8 +1,12 @@
+cmake_minimum_required(VERSION 3.18)
 project(media-controls VERSION 0.3.4)
 set(PROJECT_FULL_NAME "Media Controls")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 
+find_qt(COMPONENTS Widgets)
+
+set(CMAKE_AUTOMOC ON)
 set(media-controls_HEADERS
     media-controls.hpp
     media-control.hpp
@@ -32,7 +36,7 @@ if(WIN32)
 endif()
 
 
-qt5_wrap_ui(media-controls_UI_HEADERS MediaControls.ui)
+qt_wrap_ui(media-controls_UI_HEADERS MediaControls.ui)
 
 add_library(media-controls MODULE
 	${media-controls_HEADERS}
@@ -41,7 +45,7 @@ add_library(media-controls MODULE
 
 target_link_libraries(media-controls
 	obs-frontend-api
-	Qt5::Widgets
+	Qt::Widgets
 	libobs)
 
 set_target_properties(media-controls PROPERTIES FOLDER "plugins/exeldro")
